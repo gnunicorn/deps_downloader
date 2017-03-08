@@ -18,12 +18,16 @@ module.exports = (options, cb) => {
 	if (!options.version) {
 		throw Error("You must specify a version!")
 	}
+	if (!options.filename) {
+		throw Error("A filename is required!")
+	}
+	const prefix = options.filename;
 	const opts = Object.assign({
 		'arch': os.arch(),
 		'platform': os.platform(),
-		'targetDir': process.cwd()
+		'targetDir': process.cwd(),
+		'cache': path.join(process.cwd(), '.cache', prefix)
 	}, options);
-	const prefix = opts.filename;
 	const filename = prefix + "-v" + opts.version + "-" + opts.platform + "-" + opts.arch + '.zip';
 	const targetFilePattern = new RegExp(options.filePattern || '^(' + prefix + '|(lib)' + prefix +'.*\.(dll|so|dylib))$');
 
